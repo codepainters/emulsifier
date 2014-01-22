@@ -20,25 +20,15 @@ The file starts with a header containing the following fields:
 | Offset | Name              | Type          | Description                                        |
 |--------|-------------------|---------------|----------------------------------------------------|
 | 0      | `magic`           | `string(32)`  | magic string used to confirm the file format       |
-|--------|-------------------|---------------|----------------------------------------------------|
 | 32     | `startOffset`     | `uint32`      | offset in the file where the firmware image starts |
-|--------|-------------------|---------------|----------------------------------------------------|
-| x      | `imageLength      | `uint32`      | size of the firmware image                         |
-|--------|-------------------|---------------|----------------------------------------------------|
+| x      | `imageLength`     | `uint32`      | size of the firmware image                         |
 | x      | `checksum`        | `uint32`      | CRC32 checksum of the firmware image (see below)   |
-|--------|-------------------|---------------|----------------------------------------------------|
 | x      | `compressionType` | `string(16)`  | expected to be `"none"`                            |
-|--------|-------------------|---------------|----------------------------------------------------|
 | x      | `imageName`       | `string(32)`  | has to match the name requested by the device (see the upgrade process description) |
-|--------|-------------------|---------------|----------------------------------------------------|
 | x      | `imageType`       | `string(16)`  | has to match the type requested by the device (see the upgrade process description) |
-|--------|-------------------|---------------|----------------------------------------------------|
 | x      | `imageVersion`    | `string(16)`  | textual version number, not used |
-|--------|-------------------|---------------|----------------------------------------------------|
 | x      | `imageTarget`     | `string(32)`  | determines the target device for which the firmware is applicable, see below |
-|--------|-------------------|---------------|----------------------------------------------------|
 | x      | `properties`      | `string(256)` | not used (some *key=value* pairs in text format)   |
-|--------|-------------------|---------------|----------------------------------------------------|
 
 Note:
 
