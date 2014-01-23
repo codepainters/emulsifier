@@ -42,4 +42,4 @@ Note:
 
 The CRC32 checksum is calculated over the image file, header itself is not included in the calculation. The CRC32 variant used by the eLoader application is the one implemented by `java.util.zip.CRC32` class. 
 
-Equivalent CRC-32 generator can be generated using [pycrc]([http://www.tty1.net/pycrc/) utility with `--model crc-32` parameter.
+Equivalent CRC-32 generator can be generated using [pycrc](http://www.tty1.net/pycrc/) utility with `--model crc-32` parameter.
