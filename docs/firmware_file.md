@@ -2,7 +2,7 @@
 
 This document describes the format of the files used to update the E-Mu firmware (using eLoader). All the information below comes from eLoader code analysis.
 
-The firmware files are binary files, with constant length header immedaitely followed by the firmware image. Header contains a CRC32 checksum of the firmware image part. The files are expected to have `.dli` (Downloadable Image?) extension.
+The firmware files are binary files, with constant length header immediately followed by the firmware image. Header contains a CRC32 checksum of the firmware image part. The files are expected to have `.dli` (for *Downloadable Image*) extension.
 
 ## Strings
 
@@ -34,7 +34,7 @@ The file starts with a header containing the following fields:
 Note:
 
  * `string(n)` means a string of at most *n* characters, occupying exactly *n* bytes in the file
- * `magic` field is expected to contain `"Copyright E-mu Systems"` string (22 characters)
+ * `magic` field is expected to **start** with `"Copyright E-mu Systems"` string (22 characters), in a sample file it contains `"Copyright E-mu Systems, Inc."`
  * integers are stored **big endian** (natural format for Java)
  * `startOffset + imageLength` is expected to give the total size of the file
 
@@ -43,3 +43,14 @@ Note:
 The CRC32 checksum is calculated over the image file, header itself is not included in the calculation. The CRC32 variant used by the eLoader application is the one implemented by `java.util.zip.CRC32` class. 
 
 Equivalent CRC-32 generator can be generated using [pycrc](http://www.tty1.net/pycrc/) utility with `--model crc-32` parameter.
+
+## Sample file
+
+Code was tested with `command200.dli` file containing OS v2.0 for E-Mu Command Station (MD5: `9232b01bcaef08810e0a45df48ed2859`). 
+Intersting header fields:
+
+ * `imageName = "XL7Loader"`
+ * `imageType = "ZEXE"`
+ * `imageVersion = "Ver 2.00"`
+ * `imageTarget = "GenericOS"`
+ 
