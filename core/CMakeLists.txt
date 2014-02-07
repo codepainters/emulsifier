@@ -17,5 +17,5 @@ if (APPLE)
     find_library(COREAUDIO_LIBRARY CoreAudio)
     find_library(COREFOUNDATION_LIBRARY CoreFoundation)
     target_link_libraries(emulsifier-core ${COREMIDI_LIBRARY} ${COREAUDIO_LIBRARY} ${COREFOUNDATION_LIBRARY})
-endif
+endif (APPLE)
 
