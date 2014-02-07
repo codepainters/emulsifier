@@ -6,11 +6,11 @@ set(emulsifier-core-src
 )
 
 add_library(emulsifier-core STATIC ${emulsifier-core-src})
-include_directories(${RTMIDI_INCLUDE_DIR})
 
 find_path(RTMIDI_INCLUDE_DIR RtMidi.h HINTS ${RTMIDI_PATH})
 find_library(RTMIDI_LIBRARY NAMES librtmidi.a rtmidi HINTS ${RTMIDI_PATH})
 target_link_libraries(emulsifier-core ${RTMIDI_LIBRARY})
+include_directories(${RTMIDI_INCLUDE_DIR})
 
 if (APPLE)
     find_library(COREMIDI_LIBRARY CoreMIDI)
