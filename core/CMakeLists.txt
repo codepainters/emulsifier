@@ -1,5 +1,7 @@
 # GUI/CLI common functionality goes here
 
+find_package(RtMidi REQUIRED)
+
 set(emulsifier-core-src
     core.cpp
     midiio.cpp
@@ -7,15 +9,7 @@ set(emulsifier-core-src
 
 add_library(emulsifier-core STATIC ${emulsifier-core-src})
 
-find_path(RTMIDI_INCLUDE_DIR RtMidi.h HINTS ${RTMIDI_PATH})
-find_library(RTMIDI_LIBRARY NAMES librtmidi.a rtmidi HINTS ${RTMIDI_PATH})
-target_link_libraries(emulsifier-core ${RTMIDI_LIBRARY})
+target_link_libraries(emulsifier-core ${RTMIDI_LIBRARIES})
 include_directories(${RTMIDI_INCLUDE_DIR})
 
-if (APPLE)
-    find_library(COREMIDI_LIBRARY CoreMIDI)
-    find_library(COREAUDIO_LIBRARY CoreAudio)
-    find_library(COREFOUNDATION_LIBRARY CoreFoundation)
-    target_link_libraries(emulsifier-core ${COREMIDI_LIBRARY} ${COREAUDIO_LIBRARY} ${COREFOUNDATION_LIBRARY})
-endif (APPLE)
 
