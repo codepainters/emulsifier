@@ -5,8 +5,9 @@
 #include <QStringList>
 #include "RtMidi.h"
 
-class MidiIO
+class MidiIO : public QObject
 {
+    Q_OBJECT
 public:
     explicit MidiIO(QObject *parent = 0);
     ~MidiIO();

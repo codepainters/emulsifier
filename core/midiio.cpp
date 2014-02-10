@@ -1,7 +1,7 @@
 #include "midiio.h"
 
 MidiIO::MidiIO(QObject *parent) :
-    rtMidiIn(NULL), rtMidiOut(NULL)
+    QObject(parent), rtMidiIn(NULL), rtMidiOut(NULL)
 {
     rtMidiIn = new RtMidiIn();
     rtMidiOut = new RtMidiOut();
