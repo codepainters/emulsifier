@@ -1,5 +1,6 @@
 #include "midideviceinquiry.h"
 #include <iostream>
+#include <stdexcept>
 
 MidiDeviceInquiry::MidiDeviceInquiry(MidiIO* midi, QObject *parent) :
     QObject(parent), midi(midi)

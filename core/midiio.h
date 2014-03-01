@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QStringList>
+#include <inttypes.h>
+
 #include "RtMidi.h"
 
 class MidiIO : public QObject
