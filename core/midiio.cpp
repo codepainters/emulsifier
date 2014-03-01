@@ -1,8 +1,15 @@
+#include <QMetaType>
 #include "midiio.h"
 
 MidiIO::MidiIO(QObject *parent) :
     QObject(parent), rtMidiIn(NULL), rtMidiOut(NULL)
 {
+    static bool msgTypeRegistered = false;
+    if(!msgTypeRegistered) {
+        qRegisterMetaType<MidiMessageData>("MidiMessageData");
+        msgTypeRegistered = true;
+    }
+
     rtMidiIn = new RtMidiIn();
     rtMidiOut = new RtMidiOut();
     
@@ -58,13 +65,13 @@ void MidiIO::sendMessage(const std::vector<uint8_t> &message)
     rtMidiOut->sendMessage(const_cast<std::vector<uint8_t>*>(&message));
 }
 
-void MidiIO::rtMidiCallback(double timeStamp, std::vector<uint8_t> *message, void *userData)
+void MidiIO::rtMidiCallback(double timeStamp, std::vector<unsigned char> *message, void *userData)
 {
     MidiIO *self = static_cast<MidiIO*>(userData);
     self->onMessageReceived(timeStamp, *message);
 }
 
-void MidiIO::onMessageReceived(double timeStamp, const std::vector<uint8_t> &message)
+void MidiIO::onMessageReceived(double timeStamp, const MidiMessageData &message)
 {
     size_t size = message.size();
     if (size > 0) {

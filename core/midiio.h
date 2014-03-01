@@ -7,6 +7,8 @@
 
 #include "RtMidi.h"
 
+typedef std::vector<uint8_t> MidiMessageData;
+
 class MidiIO : public QObject
 {
     Q_OBJECT
@@ -25,7 +27,7 @@ public:
 
 signals:
     void receivedRealtimeMessage(double timeStamp, const uint8_t status, const uint8_t data1, const uint8_t data2);
-    void receivedSysExMessage(const std::vector<uint8_t> &message);
+    void receivedSysExMessage(const MidiMessageData &message);
 
 private:
     enum {
@@ -36,8 +38,8 @@ private:
     RtMidiIn* rtMidiIn;
     RtMidiOut* rtMidiOut;
 
-    static void rtMidiCallback(double timeStamp, std::vector<uint8_t> *message, void *userData);
-    void onMessageReceived(double timeStamp, const std::vector<uint8_t> &message);
+    static void rtMidiCallback(double timeStamp, std::vector<unsigned char> *message, void *userData);
+    void onMessageReceived(double timeStamp, const MidiMessageData &message);
 };
 
 #endif // MIDIIO_H
