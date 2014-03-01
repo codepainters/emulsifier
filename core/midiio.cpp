@@ -34,22 +34,38 @@ QStringList MidiIO::availableOutputs()
     return ports;
 }
 
-void MidiIO::sendMessage(const std::vector<unsigned char> &message)
+void MidiIO::selectInput(unsigned int input)
 {
-    rtMidiOut->sendMessage(const_cast<std::vector<unsigned char>*>(&message));
+    rtMidiIn->openPort(input);
 }
 
-void MidiIO::rtMidiCallback(double timeStamp, std::vector<unsigned char> *message, void *userData)
+void MidiIO::selectOutput(unsigned int output)
+{
+    rtMidiOut->openPort(output);
+}
+
+void MidiIO::sendMessage(const uint8_t* bytes, size_t length)
+{
+    std::vector<uint8_t> message(bytes, bytes + length);
+    rtMidiOut->sendMessage(&message);
+}
+
+void MidiIO::sendMessage(const std::vector<uint8_t> &message)
+{
+    rtMidiOut->sendMessage(const_cast<std::vector<uint8_t>*>(&message));
+}
+
+void MidiIO::rtMidiCallback(double timeStamp, std::vector<uint8_t> *message, void *userData)
 {
     MidiIO *self = static_cast<MidiIO*>(userData);
     self->onMessageReceived(timeStamp, *message);
 }
 
-void MidiIO::onMessageReceived(double timeStamp, const std::vector<unsigned char> &message)
+void MidiIO::onMessageReceived(double timeStamp, const std::vector<uint8_t> &message)
 {
     size_t size = message.size();
     if (size > 0) {
-        const unsigned char status = message[0];
+        const uint8_t status = message[0];
         if (status == STATUS_SYSEX && size > 2 && message[size - 1] == EOX) {
             emit receivedSysExMessage(message);
         }
