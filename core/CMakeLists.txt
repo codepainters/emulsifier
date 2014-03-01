@@ -4,10 +4,12 @@ find_package(RtMidi REQUIRED)
 
 set(emulsifier-core_HEADERS
     midiio.h
+    midideviceinquiry.h
 )
 
 set(emulsifier-core_SOURCES
     midiio.cpp
+    midideviceinquiry.cpp
 )
 
 # moc/ui stuff
