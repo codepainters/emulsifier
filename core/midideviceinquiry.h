@@ -29,7 +29,7 @@ signals:
 
 private slots:
     void timeout();
-    void receivedSysExMessage(const std::vector<uint8_t> &message);
+    void receivedSysExMessage(const MidiMessageData &message);
 
 private:
     MidiIO* midi;

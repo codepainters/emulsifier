@@ -9,7 +9,8 @@ MidiDeviceInquiry::MidiDeviceInquiry(MidiIO* midi, QObject *parent) :
 
 void MidiDeviceInquiry::startDeviceInquiry(unsigned long inquiryTime)
 {
-    connect(midi, SIGNAL(receivedSysExMessage(std::vector<uint8_t>)), this, SLOT(receivedSysExMessage(std::vector<uint8_t>)));
+    connect(midi, SIGNAL(receivedSysExMessage(const MidiMessageData&)),
+            this, SLOT(receivedSysExMessage(const MidiMessageData&)));
 
     // F0 7E <deviceId> 06 01 F7
     const uint8_t devInquiry[] = { 0xF0, 0x7E, 0x7F, 0x06, 0x01, 0xF7 };
@@ -19,17 +20,15 @@ void MidiDeviceInquiry::startDeviceInquiry(unsigned long inquiryTime)
     timer->singleShot(inquiryTime, this, SLOT(timeout()));
 }
 
-void MidiDeviceInquiry::receivedSysExMessage(const std::vector<uint8_t> &message)
+void MidiDeviceInquiry::receivedSysExMessage(const MidiMessageData &message)
 {
-    std::cout << "got somethin" << std::endl;
     try {
         // is a device inquiry response?
-        if(message[0] == 0xF0 && message[1] == 0x7E && message[3] == 0x06 && message[4] == 0x01) {
-
+        if(message[0] == 0xF0 && message[1] == 0x7E && message[3] == 0x06 && message[4] == 0x02) {
             MidiDevice device;
             device.deviceId = message[2];
 
-            std::vector<uint8_t>::const_iterator i = message.begin();
+            std::vector<uint8_t>::const_iterator i = message.begin() + 5;
 
             // manufacturer ID can be 1 or 3 bytes (if first is 0x00)
             device.manufacturerId = *i++;
@@ -57,6 +56,7 @@ void MidiDeviceInquiry::receivedSysExMessage(const std::vector<uint8_t> &message
 
 void MidiDeviceInquiry::timeout()
 {
-    disconnect(midi, SIGNAL(receivedSysExMessage(std::vector<uint8_t>)), this, SLOT(receivedSysExMessage(std::vector<uint8_t>)));
+    disconnect(midi, SIGNAL(receivedSysExMessage(const MidiMessageData&)),
+               this, SLOT(receivedSysExMessage(const MidiMessageData&)));
     emit deviceInquiryCompleted(devices);
 }
