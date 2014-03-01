@@ -5,7 +5,10 @@ MidiIO::MidiIO(QObject *parent) :
 {
     rtMidiIn = new RtMidiIn();
     rtMidiOut = new RtMidiOut();
+    
     rtMidiIn->setCallback(MidiIO::rtMidiCallback, this);
+    // Don't ignore SysEx messages
+    rtMidiIn->ignoreTypes(false);
 }
 
 MidiIO::~MidiIO()
