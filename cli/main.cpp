@@ -1,7 +1,8 @@
 #include <QCoreApplication>
-#include <QDebug>
+#include <iostream>
 
 #include "midiio.h"
+#include "cmdlistdevices.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,8 +10,20 @@ int main(int argc, char *argv[])
     MidiIO midi;
 
     QStringList ports = midi.availableInputs();
+    std::cout << "MIDI INs:" << std::endl;
     foreach(QString port, ports)
-        qDebug() << port << endl;
+        std::cout << port.toUtf8().constData() << std::endl;
+
+    ports = midi.availableOutputs();
+    std::cout << "MIDI OUTs:" << std::endl;
+    foreach(QString port, ports)
+        std::cout << port.toUtf8().constData() << std::endl;
+
+    midi.selectInput(0);
+    midi.selectOutput(0);
+
+    CmdListDevices cmd(&midi);
+    cmd.execute();
 
     return a.exec();
 }
